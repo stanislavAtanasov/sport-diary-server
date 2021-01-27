@@ -10,30 +10,27 @@ export type TrainingType =
   | 'endurance'
   | 'preparation'
   | 'strength'
+  | 'mix'
+  | 'active-rest'
+  | 'rest'
 
-export type TrainingDayIntensity = 'low' | 'medium' | 'high'
-export type TrainingProgramLevel = 'beginner' | 'advanced'
+export type Intensity = 'low' | 'medium' | 'high'
+export type Level = 'beginner' | 'advanced' | 'elite'
 
-export interface TrainingTask {
+export interface Task {
   name: string
   done: boolean
 }
 
-export interface TrainingDay {
+export interface Description {
   name?: string
   /**
    * Training description. Could be translated into tasks as shown below
    */
   description: string
+  intensity: Intensity
   /**
-   * [] stretching 10min
-   * [] warm up 15min
-   * [] 3 circles x 50 moves
-   */
-  tasks?: TrainingTask[]
-  intensity: TrainingDayIntensity
-  /**
-   * ex. 10 weeks
+   * ex. 1 year, 10 weeks, 1 hour and etc ...
    */
   duration?: string
   /**
@@ -45,13 +42,17 @@ export interface TrainingDay {
   mediaURL?: string
 }
 
-export interface TrainingProgram extends TrainingDay {
-  createdFrom: User
-  phases: Record<string, TrainingCycle>
-  level: TrainingProgramLevel
+export interface TrainingDay  extends Description{
+  tasks?: Task[]
 }
 
-export interface TrainingCycle extends TrainingDay {
+export interface TrainingProgram extends Description {
+  createdFrom: User
+  phases: Record<string, TrainingCycle>
+  level: Level
+}
+
+export interface TrainingCycle extends Description {
   days: TrainingDay[]
   createdFrom: User
 }
